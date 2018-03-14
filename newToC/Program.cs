@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-
-namespace newToC
+namespace NFAtoDFA
 {
     public class NFAMap {
         public List<int> acceptedStates = new List<int>();
@@ -40,8 +40,6 @@ namespace newToC
         public char letter = '!';
         public List<int> endingStates = new List<int>();
     }
-
-
 
     public class Worker {
         NFAMap NFA;
@@ -87,7 +85,7 @@ namespace newToC
             }
         }
 
-        public void createDFA() {
+        public DFAMap createDFA() {
             DFAMap DFA = new DFAMap();
             DFA.Alphabet = NFA.Alphabet; //use alphabet from NFA
             DFA.startingState = NFA.startingState; //use alphabet from NFA
@@ -115,12 +113,17 @@ namespace newToC
             }
             DFA.AllStates.Add(first); //Add the first state into the DFA states
 
+            //Check if any new elements should be made, and then make them
             CheckAndCreateDFAElement(DFA);
 
+            //Update the total number of states
             foreach (var item in DFA.AllStates) {
                 DFA.totalNumStates += 1;
             }
+            //Add the accepted states
             DFA.acceptedStates = NFA.acceptedStates;
+
+            return DFA;
         }
 
         public void CheckAndCreateDFAElement(DFAMap DFA) {
@@ -178,9 +181,27 @@ namespace newToC
             CheckAndCreateDFAElement(DFA);
         }
 
-        public void writeToFile() {
+        //Writes to the output file
+        public void writeToFile(DFAMap DFA) {
+            File.Create("Output.txt").Close();
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter("Output.txt")) {
+                file.WriteLine(DFA.totalNumStates);
+                foreach (var AlphabetElement in DFA.Alphabet)
+                    file.Write(AlphabetElement);
+                file.WriteLine("");
+                foreach (var states in DFA.acceptedStates)
+                    file.Write(states + " ");
+                file.WriteLine("");
+                file.WriteLine(DFA.startingState);
 
-
+                int i = 0;
+                foreach (var State in DFA.AllStates) {
+                    foreach (var moveElement in State.possibleMoves) {
+                        file.WriteLine(State.states.Max() + " " + moveElement.letter + " " + moveElement.endingStates.Max());
+                    }
+                    i++;
+                }
+            }
         }
     }
 
@@ -189,8 +210,8 @@ namespace newToC
         static void Main(string[] args) {
             Worker work = new Worker();
             work.readFileAndCreateNFA();
-            work.createDFA();
-            work.writeToFile();
+            DFAMap DFA = work.createDFA();
+            work.writeToFile(DFA);
         }
     }
 }
