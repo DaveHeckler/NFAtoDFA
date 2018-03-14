@@ -1,0 +1,5 @@
+C:\Users\Dave\Desktop\NewToC\newToC\newToC\obj\Debug\newToC.csprojResolveAssemblyReference.cache
+C:\Users\Dave\Desktop\NewToC\newToC\newToC\bin\Debug\newToC.exe
+C:\Users\Dave\Desktop\NewToC\newToC\newToC\bin\Debug\newToC.pdb
+C:\Users\Dave\Desktop\NewToC\newToC\newToC\obj\Debug\newToC.exe
+C:\Users\Dave\Desktop\NewToC\newToC\newToC\obj\Debug\newToC.pdb
